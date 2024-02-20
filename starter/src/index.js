@@ -3,10 +3,14 @@ import express from "express";
 import * as Sentry from "@sentry/node";
 import { ProfilingIntegration } from "@sentry/profiling-node";
 import loginRouter from "./routes/login.js";
+import usersRouter from "./routes/users.js";
+import errorCatcher from "./middleware/errorCatcher.js";
+import timeMonitorMiddleware from "./middleware/timeMonitor.js";
 
 const app = express();
 
 app.use(express.json());
+app.use(timeMonitorMiddleware);
 
 Sentry.init({
   dsn: "https://be0efbe244f1351b732ca36153653fcd@o4506775762501632.ingest.sentry.io/4506779447787520",
@@ -37,6 +41,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/login", loginRouter);
+app.use("/users", usersRouter);
 
 /***********************************************************************************************************************************************************************/
 
@@ -50,6 +55,8 @@ app.use(function onError(err, req, res, next) {
   res.statusCode = 500;
   res.end(res.sentry + "\n");
 });
+
+app.use(errorCatcher);
 
 app.listen(3000, () => {
   console.log("Server is listening on port 3000");
