@@ -3,9 +3,11 @@ import express from "express";
 import * as Sentry from "@sentry/node";
 import { ProfilingIntegration } from "@sentry/profiling-node";
 import loginRouter from "./routes/login.js";
+import categoriesRouter from "./routes/categories.js";
 import usersRouter from "./routes/users.js";
 import errorCatcher from "./middleware/errorCatcher.js";
 import timeMonitorMiddleware from "./middleware/timeMonitor.js";
+import eventRouter from "./routes/events.js";
 
 const app = express();
 
@@ -42,6 +44,8 @@ app.get("/", (req, res) => {
 
 app.use("/login", loginRouter);
 app.use("/users", usersRouter);
+app.use("/events", eventRouter);
+app.use("/categories", categoriesRouter);
 
 /***********************************************************************************************************************************************************************/
 

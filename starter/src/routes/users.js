@@ -10,7 +10,8 @@ import deleteUser from "../services/users/deleteUser.js";
 const router = Router();
 
 router.get("/", (req, res) => {
-  const usersData = getUsers();
+  const { name, username } = req.query;
+  const usersData = getUsers(name, username);
   res.json(usersData);
 });
 

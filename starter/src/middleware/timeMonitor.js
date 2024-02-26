@@ -3,7 +3,8 @@ const timeMonitorMiddleware = (req, res, next) => {
   res.on("finish", () => {
     const endTime = Date.now();
     const elapsedTime = endTime - startTime;
-    console.log(`Request took ${elapsedTime}ms`);
+    const url = `${req.protocol}://${req.get("host")}${req.originalUrl}`;
+    console.log(`${req.method} ${url} took ${elapsedTime}ms`);
   });
   next();
 };
